@@ -9,9 +9,9 @@ public class ConnectDatabase {
 	
 	public static Connection getMySQLConnection() throws ClassNotFoundException, SQLException {
         // Cấu hình cơ sở dữ liệu
-        String dbURL = "jdbc:mysql://localhost:3306/TKBGV";
+        String dbURL = "jdbc:mysql://localhost:3306/tkbgv";
         String username = "root";
-        String password = "dung08042004";
+        String password = "123456";
 
         // Tải driver MySQL
         Class.forName("com.mysql.cj.jdbc.Driver");

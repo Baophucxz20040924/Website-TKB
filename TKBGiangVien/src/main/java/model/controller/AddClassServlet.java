@@ -11,6 +11,7 @@ import model.bo.ClassBO;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet(name = "AddClassServlet", urlPatterns = {"/addClass"})
 public class AddClassServlet extends HttpServlet {
@@ -52,7 +53,7 @@ public class AddClassServlet extends HttpServlet {
         cls.setNumberOfStudents(numberOfStudents);
 
         try {
-            // Gọi phương thức addClass để thêm lớp học và lấy classID
+            // Gọi phương thức addClass để thêm lớp học
             boolean isAdded = classBO.addClass(cls);
 
             if (isAdded) {
@@ -65,6 +66,9 @@ public class AddClassServlet extends HttpServlet {
 
             // Quay lại trang form thêm lớp học
             request.getRequestDispatcher("addClassForm.jsp").forward(request, response);
+     //  	catch những lỗi																																								 } catch (SQLIntegrityConstraintViolationException e) {
+       //   khác taị đây																																										  request.setAttribute("message", "Lỗi: Tên lớp đã tồn tại, vui lòng chọn tên khác!");
+         //  ..........																																										 request.getRequestDispatcher("addClassForm.jsp").forward(request, response);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             // Hiển thị thông báo lỗi nếu xảy ra lỗi
@@ -73,4 +77,3 @@ public class AddClassServlet extends HttpServlet {
         }
     }
 }
-

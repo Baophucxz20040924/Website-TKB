@@ -38,6 +38,10 @@
             color: white;
         }
 
+        .btn-search {
+            margin-left: 10px;
+        }
+
         table {
             margin-top: 20px;
         }
@@ -74,12 +78,26 @@
             <a href="${pageContext.request.contextPath}/addRoom" class="btn btn-add">Thêm Phòng Học</a>
         </div>
 
+        <!-- Form Tìm Kiếm Phòng Học Theo Sức Chứa -->
+        <form action="${pageContext.request.contextPath}/listRooms" method="get" class="mb-3 d-flex align-items-center">
+            <input type="number" class="form-control" id="capacity" name="capacity" 
+                   placeholder="Nhập sức chứa tối thiểu" required>
+            <button type="submit" class="btn btn-primary btn-search">Tìm Kiếm</button>
+        </form>
+
         <!-- Kiểm tra danh sách phòng học -->
         <%
             List<Room> roomList = (List<Room>) request.getAttribute("roomList");
-            if (roomList != null && !roomList.isEmpty()) {
+            String filterMessage = (String) request.getAttribute("filterMessage");
         %>
+        
+        <% if (filterMessage != null) { %>
+            <div class="alert alert-info text-center" role="alert">
+                <%= filterMessage %>
+            </div>
+        <% } %>
 
+        <% if (roomList != null && !roomList.isEmpty()) { %>
         <!-- Bảng danh sách phòng học -->
         <table class="table table-bordered table-hover text-center">
             <thead class="table-primary">
@@ -98,7 +116,8 @@
                     <td><%= room.getCapacity() %></td>
                     <td>
                         <!-- Nút Sửa -->
-                        <a href="<%= request.getContextPath() %>/editRoom?roomID=<%= room.getRoomID() %>" class="btn btn-edit">Sửa</a>
+                        <a href="<%= request.getContextPath() %>/editRoom?roomID=<%= room.getRoomID() %>" 
+                           class="btn btn-edit">Sửa</a>
                         <!-- Nút Xóa -->
                         <a href="<%= request.getContextPath() %>/deleteRoom?roomID=<%= room.getRoomID() %>" 
                            class="btn btn-delete"
@@ -108,7 +127,6 @@
                 <% } %>
             </tbody>
         </table>
-
         <% } else { %>
         <!-- Thông báo khi không có dữ liệu -->
         <div class="alert alert-warning text-center" role="alert">
@@ -118,8 +136,7 @@
 
         <!-- Nút quay lại trang chủ -->
         <div class="text-center">
-             <a href="<%= request.getContextPath() %>/home" class="btn btn-add">Quay lại</a>
-
+            <a href="<%= request.getContextPath() %>/home" class="btn btn-add">Quay lại</a>
         </div>
     </div>
 

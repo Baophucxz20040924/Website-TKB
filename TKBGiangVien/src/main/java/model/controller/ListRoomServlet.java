@@ -12,6 +12,7 @@ import model.bo.RoomBO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "ListRoomServlet", urlPatterns = {"/listRooms"})
 public class ListRoomServlet extends HttpServlet {
@@ -28,8 +29,25 @@ public class ListRoomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Lấy danh sách phòng học từ cơ sở dữ liệu
-            ArrayList<Room> roomList = (ArrayList<Room>) roomBO.getAllRooms();
+            String capacityParam = request.getParameter("capacity");
+            List<Room> roomList;
+
+            // Kiểm tra nếu có tham số capacity được gửi từ form
+            if (capacityParam != null && !capacityParam.isEmpty()) {
+                try {
+                    int capacity = Integer.parseInt(capacityParam);
+                    // Lọc danh sách phòng học theo sức chứa
+                    roomList = roomBO.getRoomsByCapacity(capacity);
+                    request.setAttribute("filterMessage", "Danh sách phòng có sức chứa lớn hơn " + capacity);
+                } catch (NumberFormatException e) {
+                    // Xử lý khi capacity không hợp lệ
+                    request.setAttribute("message", "Giá trị sức chứa không hợp lệ!");
+                    roomList = new ArrayList<>();
+                }
+            } else {
+                // Nếu không có tham số, lấy tất cả phòng
+                roomList = roomBO.getAllRooms();
+            }
 
             // Đặt danh sách phòng học vào request attribute
             request.setAttribute("roomList", roomList);

@@ -33,7 +33,10 @@ public class RoomBO {
     public List<Room> getAllRooms() throws SQLException, ClassNotFoundException {
         return roomDAO.getAllRooms();
     }
-
+    
+    public List<Room> getRoomsByCapacity(int capacity) throws SQLException, ClassNotFoundException {
+        return roomDAO.getRoomsByCapacity(capacity);
+    }
     // Lấy thông tin phòng học theo ID
     public Room getRoomById(int roomID) throws SQLException, ClassNotFoundException {
         return roomDAO.getRoomById(roomID); // Gọi phương thức từ DAO
